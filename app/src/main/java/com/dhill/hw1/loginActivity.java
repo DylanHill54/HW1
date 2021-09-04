@@ -19,6 +19,7 @@ public class loginActivity extends AppCompatActivity {
     private android.widget.EditText mPassword;
     private String mUsernameString;
     private String mPasswordString;
+    user mUser=null;
     private int mUserid;
     private Button mButton;
     private List<user> users;
@@ -57,7 +58,8 @@ public class loginActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 getValuesFromDisplay();
-                if (checkForUserInDataBase(mUsernameString,mPasswordString)) {
+                if (checkForUserInDataBase(mUsernameString) ){
+                    if(!validatePassword(mPasswordString)){
                         Toast.makeText(loginActivity.this, "Invalid password", Toast.LENGTH_SHORT).show();
                     } else {
                         Intent intent=MainActivity.intentFactory(getApplicationContext(),mUserid);
@@ -65,24 +67,34 @@ public class loginActivity extends AppCompatActivity {
 
                     }
                 }
+            }
 
         });
     }
 
-    private boolean checkForUserInDataBase(String mUsernameString, String mPasswordString) {
-        for (user u : users){
-            if(u.getUserName().equals(mUsernameString)) {
-                mUserid=u.getUserId();
-                if(u.getPassword().equals(mPasswordString)){
-                return true;
-            }
-                return false;
-            }
+    private boolean validatePassword(String mPasswordString) {
+        if(mUser.getPassword().equals(mPasswordString)) {
+            mUserid=mUser.getUserId();
+            return true;
         }
         return false;
-
-
     }
+
+    private boolean checkForUserInDataBase(String mUsernameString) {
+        for (user u : users){
+            if (u.getUserName().equals(mUsernameString)){
+                mUser=u;
+            }
+        }
+        if(mUser==null){
+            Toast.makeText(this, "no user " +mUsernameString+" found",Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        return true;
+    }
+
+
+
 
 
 

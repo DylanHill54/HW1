@@ -25,7 +25,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView textViewResult;
     private JsonPLaceHolderAPI jsonPlaceHolderApi;
     int mUserId = -1;
-    
+
 
 
     @Override
